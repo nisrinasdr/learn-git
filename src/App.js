@@ -10,6 +10,7 @@ function App({list, getList}) {
 
   useEffect(() => {
     // get List
+    // add get list
     getList()
   }, [])
 
