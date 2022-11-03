@@ -9,6 +9,7 @@ function App({list, getList}) {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // add get list
     getList()
   }, [])
 
