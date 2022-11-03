@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import { Card, CardText } from 'reactstrap';
+import { useEffect } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { getList } from './features/list/action';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+function App({list, getList}) {
+  const store = useSelector(state => state.list)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getList()
+  }, [])
+
+  return !list?.loading && list?.data?.length > 0 && (
+    <>
+      <h1>To Do List</h1>
+      {list.data?.map(data => (
+        <Card key={data.id}>
+          <CardText>
+            {data.title}
+          </CardText>
+        </Card>
+      ))}
+    </>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  list: state.list
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getList: () => {
+    dispatch(getList())
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
